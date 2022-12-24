@@ -1,17 +1,31 @@
 library(DBI)
 library(dbplyr)
-personaldb <- dbConnect(duckdb::duckdb(), dbdir="/home/georgy/personal.duckdb", read_only=F)
-transaction <- function(tdate, ttime, amount, category, commentary){
-  values <- list(Transaction.Date=tdate, Transaction.Time=ttime,
-                 Amount=amount, Category=category, Commentary=commentary)
+library(dplyr)
+
+personaldb <- dbConnect(duckdb::duckdb(),
+                        dbdir="/home/georgy/personal.duckdb",
+                        read_only=F)
+
+make.transaction <- function(){
+  values <- list(
+    Transaction.Date = readline("Date in format YYYY-mm-DD: "),
+    Transaction.Time = readline("Time in format HH:MM: "),
+    Amount = readline("Amount, negative '-' for spending: "),
+    Category = readline("Category: "),
+    Commentary = readline("What have you done?! : "))
   data.frame(values)
 }
-Transaction <- transaction(
-  tdate = readline("Date in format YYYY-mm-DD: "),
-  ttime = readline("Time in format HH:MM: "),
-  amount = readline("Amount, negative '-' for spending: "),
-  category = readline("Category: "),
-  commentary = readline("what did you do: ")
-)
-dbAppendTable(personaldb, "finances", Transaction)
-dbDisconnect(personaldb, shutdown=T)
+
+send.transaction <- function(data){
+  dbAppendTable(personaldb, 'finances', data)
+  output <- tbl(personaldb, 'finances')%>% collect()%>% tail()
+  output
+}
+
+new.transaction <- function(){
+  send.transaction(data=make.transaction())
+}
+
+end.transaction <- function(){
+  dbDisconnect(personaldb, shutdown=T)
+}

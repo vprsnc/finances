@@ -147,7 +147,7 @@ server <- function(input, output){
     barplot(
       height = count.expenses$count,
       names.arg = count.expenses$Category,
-      angle = 45,
+      angle = '45',
       ## col = '#b9c0ab',
       main = 'Expenses by quantity'
     )
@@ -199,10 +199,10 @@ server <- function(input, output){
   output$income_barchart <- renderPlot({
     barplot(
       height = count.expenses$count,
-      names.arg = count.expenses$Category,
-      angle = 45,
+      names.arg = count.income$Category,
+      angle = '45',
       ## col = '#b9c0ab',
-      main = 'Expenses by quantity'
+      main = 'Incomes by quantity'
     )
   }) # output$barchart
 

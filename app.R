@@ -48,13 +48,15 @@ ui <- fluidPage(
     tabPanel(
       title = "Expenses",
 
+      sidebarPanel(
+        title = "Expenses pivot:",
+
+        dataTableOutput('expenses_pivot')
+
+      ),
+
       fluidRow(
 
-        column( width = 4, offset = 1,
-
-          plotOutput('expenses_barchart'),
-
-        ), # column
 
         column( width = 4, offset = 1,
 
@@ -66,7 +68,13 @@ ui <- fluidPage(
 
       fluidRow(
 
-        column(width = 10, offset = 1,
+        column( width = 4, offset = 1,
+
+          plotOutput('expenses_barchart'),
+
+        ), # column
+
+        column(width = 4, offset = 1,
 
                plotOutput('expenses_linechart')
 
@@ -79,13 +87,15 @@ ui <- fluidPage(
     tabPanel(
       title = "Income",
 
+      sidebarPanel(
+        title = "Income pivot:",
+
+        dataTableOutput('income_pivot')
+
+      ),
+
       fluidRow(
 
-        column( width = 4, offset = 1,
-
-          plotOutput('income_barchart'),
-
-        ), # column
 
         column( width = 4, offset = 1,
 
@@ -97,7 +107,13 @@ ui <- fluidPage(
 
       fluidRow(
 
-        column(width = 10, offset = 1,
+        column( width = 4, offset = 1,
+
+          plotOutput('income_barchart'),
+
+        ), # column
+
+        column(width = 4, offset = 1,
 
                plotOutput('income_linechart')
 
@@ -127,6 +143,8 @@ server <- function(input, output, session){
   observeEvent(input$submit_but, {
 
 
+
+    ## NEW TRANSACTION
     newTrans <- list(
 
       Transaction.Date = input$tdate,
@@ -155,6 +173,7 @@ server <- function(input, output, session){
   all.transactions <- tbl(my_db, 'transactions')
 
 
+  ## EXPENSES
   count.expenses <- all.transactions%>%
     filter(Category != 'Salary')%>%
     filter(Category != 'Passive income')%>%
@@ -179,6 +198,7 @@ server <- function(input, output, session){
     summarise(sum = sum( abs(as.numeric(Amount)) ))%>%
     collect()
 
+
   output$expenses_piechart <- renderPlot({
 
     pie(
@@ -188,6 +208,7 @@ server <- function(input, output, session){
     ) # pie
 
   }) # output$piechart
+
 
   daytoday.expenses <- all.transactions%>%
     filter(Category != 'Salary')%>%
@@ -209,6 +230,13 @@ server <- function(input, output, session){
 
   }) # output$expenses_linechart
 
+  count.expenses$sum <- sum.expenses$sum
+
+  output$expenses_pivot <- renderDataTable(count.expenses)
+
+
+
+  ## INCOME
   count.income <- all.transactions%>%
     filter(Category == 'Salary' | Category == 'Passive income')%>%
     group_by(Category)%>%
@@ -258,6 +286,10 @@ server <- function(input, output, session){
     ) # barplot
 
   }) # output$income_linechart
+
+  ## count.income$sum <- sum.income$sum
+
+  output$income_pivot<- renderDataTable(count.income)
 
   last.transactions <- all.transactions%>%
     arrange(desc(Transaction.Date), desc(Transaction.Time))%>%

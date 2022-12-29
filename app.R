@@ -3,6 +3,7 @@ library(shinythemes)
 library(DT)
 library(DBI)
 library(dplyr)
+library(duckdb)
 
 categories <- list('Salary', 'Passive income', 'Food', 'Wine', 'BigBuy', 'Transport', 'Products')
 

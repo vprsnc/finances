@@ -3,7 +3,9 @@ library(shinythemes)
 library(DT)
 library(DBI)
 library(dplyr)
-library(duckdb)
+library(RPostgreSQL)
+
+source('setup.R')
 
 categories <- list('Salary', 'Passive income', 'Food', 'Entertainment', 'BigBuy', 'Transport', 'Products')
 
@@ -113,9 +115,12 @@ ui <- fluidPage(
 
 server <- function(input, output){
 
-  mydb <- dbConnect(duckdb(),
-                    dbdir='./my.duckdb',
-                    read_only = F)
+  my_db <- dbConnect(dbDriver("PostgreSQL"),
+                     dbname = dbname,
+                     host = dbhostname,
+                     port = dbport,
+                     user = dbuser,
+                     password = dbpass)
 
   observeEvent(input$submit_but, {
 

@@ -122,7 +122,9 @@ server <- function(input, output){
                      user = dbuser,
                      password = dbpass)
 
+
   observeEvent(input$submit_but, {
+
 
     newTrans <- list(
 
@@ -134,7 +136,16 @@ server <- function(input, output){
 
     )%>%data.frame() # newTrans
 
-    dbAppendTable(my_db, 'transactions', newTrans)
+    newTrans$row.names <- all.transactions%>%
+                           select(row.names)%>%
+                           arrange(desc(as.integer(row.names)))%>%
+                           collect(n=1)%>%
+                           as.integer()
+
+    ## dbAppendTable(my_db, 'transactions', newTrans)
+
+    apnd <- sqlAppendTable(my_db, 'transactions', newTrans)
+    dbExecute(my_db, apnd)
 
   }) # observeEvent
 
@@ -264,3 +275,5 @@ server <- function(input, output){
 } # server
 
 shinyApp(ui = ui, server = server)
+
+

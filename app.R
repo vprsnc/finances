@@ -9,6 +9,7 @@ source('setup.R')
 
 categories <- list('Salary', 'Passive income', 'Food', 'Entertainment', 'BigBuy', 'Transport', 'Products')
 
+
 ui <- fluidPage(
   theme = shinytheme('flatly'),
 
@@ -113,7 +114,7 @@ ui <- fluidPage(
 
 ) # fluidPage
 
-server <- function(input, output){
+server <- function(input, output, session){
 
   my_db <- dbConnect(dbDriver("PostgreSQL"),
                      dbname = dbname,
@@ -146,6 +147,8 @@ server <- function(input, output){
 
     apnd <- sqlAppendTable(my_db, 'transactions', newTrans)
     dbExecute(my_db, apnd)
+
+    session$reload()
 
   }) # observeEvent
 

@@ -115,7 +115,7 @@ ui <- fluidPage(
 
 server <- function(input, output){
 
-  mydb <- dbConnect(dbDriver("PostgreSQL"),
+  my_db <- dbConnect(dbDriver("PostgreSQL"),
                      dbname = dbname,
                      host = dbhostname,
                      port = dbport,
@@ -134,11 +134,11 @@ server <- function(input, output){
 
     )%>%data.frame() # newTrans
 
-    dbAppendTable(mydb, 'finances', newTrans)
+    dbAppendTable(my_db, 'transactions', newTrans)
 
   }) # observeEvent
 
-  all.transactions <- tbl(mydb, 'finances')
+  all.transactions <- tbl(my_db, 'transactions')
 
 
   count.expenses <- all.transactions%>%
@@ -259,7 +259,7 @@ server <- function(input, output){
     sum()%>%
     renderText()
 
-  onStop( function(){dbDisconnect(mydb, shutdown=T)} )
+  onStop( function(){dbDisconnect(my_db, shutdown=T)} )
 
 } # server
 

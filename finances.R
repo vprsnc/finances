@@ -1,7 +1,5 @@
 library(DBI)
 library(dbplyr)
-library(dplyr)
-
 personaldb <- dbConnect(duckdb::duckdb(),
                         dbdir="/home/georgy/personal.duckdb",
                         read_only=F)

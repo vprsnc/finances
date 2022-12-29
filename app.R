@@ -5,7 +5,7 @@ library(DBI)
 library(dplyr)
 library(duckdb)
 
-categories <- list('Salary', 'Passive income', 'Food', 'Wine', 'BigBuy', 'Transport', 'Products')
+categories <- list('Salary', 'Passive income', 'Food', 'Entertainment', 'BigBuy', 'Transport', 'Products')
 
 ui <- fluidPage(
   theme = shinytheme('flatly'),

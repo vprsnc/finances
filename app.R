@@ -113,7 +113,7 @@ ui <- fluidPage(
 
 server <- function(input, output){
 
-  mydb <- dbConnect(duckdb::duckdb(),
+  mydb <- dbConnect(duckdb(),
                     dbdir='./my.duckdb',
                     read_only = F)
 

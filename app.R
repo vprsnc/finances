@@ -115,7 +115,7 @@ ui <- fluidPage(
 
 server <- function(input, output){
 
-  my_db <- dbConnect(dbDriver("PostgreSQL"),
+  mydb <- dbConnect(dbDriver("PostgreSQL"),
                      dbname = dbname,
                      host = dbhostname,
                      port = dbport,

@@ -140,7 +140,7 @@ server <- function(input, output){
                            select(row.names)%>%
                            arrange(desc(as.integer(row.names)))%>%
                            collect(n=1)%>%
-                           as.integer()
+                           as.integer() + 1
 
     ## dbAppendTable(my_db, 'transactions', newTrans)
 

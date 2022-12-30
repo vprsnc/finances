@@ -142,8 +142,6 @@ server <- function(input, output, session){
 
   observeEvent(input$submit_but, {
 
-
-
     ## NEW TRANSACTION
     newTrans <- list(
 
@@ -163,8 +161,9 @@ server <- function(input, output, session){
 
     ## dbAppendTable(my_db, 'transactions', newTrans)
 
-    apnd <- sqlAppendTable(my_db, 'transactions', newTrans)
-    dbExecute(my_db, apnd)
+    if(is.numeric( newTrans$Amount )){
+      apnd <- sqlAppendTable(my_db, 'transactions', newTrans)
+      dbExecute(my_db, apnd)}
 
     session$reload()
 

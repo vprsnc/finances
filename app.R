@@ -147,7 +147,7 @@ server <- function(input, output, session){
 
       Transaction.Date = input$tdate,
       Transaction.Time = input$ttime,
-      Amount = input$amount,
+      Amount = as.numeric(input$amount),
       Category = input$category,
       Commentary = input$commentary
 

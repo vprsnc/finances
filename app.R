@@ -5,9 +5,10 @@ library(DBI)
 library(dplyr)
 library(RPostgreSQL)
 
-source('setup.R')
+source("setup.R")
 
-categories <- list('Salary', 'Passive income', 'Food', 'Entertainment', 'BigBuy', 'Transport', 'Products')
+categories <- list("Salary", "Passive income", "Food",
+                   "Entertainment", "BigBuy", "Transport", "Products")
 
 
 ui <- fluidPage(
@@ -139,7 +140,6 @@ server <- function(input, output, session){
                      user = dbuser,
                      password = dbpass)
 
-
   observeEvent(input$submit_but, {
 
     ## NEW TRANSACTION
@@ -162,7 +162,7 @@ server <- function(input, output, session){
     ## dbAppendTable(my_db, 'transactions', newTrans)
 
     if(is.numeric( newTrans$Amount )){
-      apnd <- sqlAppendTable(my_db, 'transactions', newTrans)
+      apnd <- sqlAppendTable(my_db, "transactions", newTrans)
       dbExecute(my_db, apnd)}
 
     session$reload()
@@ -309,5 +309,3 @@ server <- function(input, output, session){
 } # server
 
 shinyApp(ui = ui, server = server)
-
-

@@ -3,7 +3,7 @@ library(shinythemes)
 library(DT)
 library(DBI)
 library(dplyr)
-library(RPostgreSQL)
+library(RMariaDB)
 
 source("setup.R")
 
@@ -133,7 +133,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session){
 
-  my_db <- dbConnect(dbDriver("PostgreSQL"),
+  my_db <- dbConnect(MariaDB(),
                      dbname = dbname,
                      host = dbhostname,
                      port = dbport,

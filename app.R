@@ -194,7 +194,7 @@ server <- function(input, output, session){
     filter(Category != 'Salary')%>%
     filter(Category != 'Passive income')%>%
     group_by(Category)%>%
-    summarise(sum = sum( abs(as.numeric(Amount)) ))%>%
+    summarise(sum = sum(abs(Amount)))%>%
     collect()
 
 
@@ -213,7 +213,7 @@ server <- function(input, output, session){
     filter(Category != 'Salary')%>%
     filter(Category != 'Passive income')%>%
     group_by(date = Transaction.Date)%>%
-    summarise(sum = sum( abs(as.numeric(Amount)) ))%>%
+    summarise(sum = sum(abs(Amount)))%>%
     collect()
 
 
@@ -255,7 +255,7 @@ server <- function(input, output, session){
   sum.income <- all.transactions%>%
     filter(Category == 'Salary' | Category == 'Passive income')%>%
     group_by(Category)%>%
-    summarise(sum = sum( abs(as.numeric(Amount)) ))%>%
+    summarise(sum = sum( abs(Amount)))%>%
     collect()
 
   output$income_piechart <- renderPlot({
@@ -271,7 +271,7 @@ server <- function(input, output, session){
   monthtomonth.income <- all.transactions%>%
     filter(Category == 'Salary' | Category == 'Passive income')%>%
     group_by(date = substring(Transaction.Date, 0, 7))%>%
-    summarise(sum = sum( abs(as.numeric(Amount)) ))%>%
+    summarise(sum = sum( abs(Amount)))%>%
     collect()
 
 

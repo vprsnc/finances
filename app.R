@@ -145,7 +145,7 @@ server <- function(input, output, session){
     ## NEW TRANSACTION
     newTrans <- list(
 
-      Transaction.Date = input$tdate,
+      Transaction.Date = paste(input$tdate),
       Transaction.Time = input$ttime,
       Amount = as.numeric(input$amount),
       Category = input$category,
